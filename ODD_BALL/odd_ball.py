@@ -432,7 +432,9 @@ def exp(blocks, config, glob_t, instruct):
     ## Initate Experimental ##
     for bn in range(len(blocks)):
         block_prompt(blocks, bn, config)
-        pp.setData(config.TB_PIN)
+        # Beginning of each block
+        if eeg:
+            pp.setData(config.BB_PIN)
         run_block(blocks, bn, config)
 
     # EEG PIN setup
