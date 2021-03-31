@@ -74,12 +74,12 @@ if beh:
      writer.write(trial) writes individual trials with a low latency.
      ** Check extra.py for more information.
     """
-    sub_id = str(demo["subject"])
-    ses_id = str(demo["session_id"])
+    sub_id = "sub-"+str(demo["subject"])
+    ses_id = "ses-"+str(demo["session_id"])
     fn_pre = "_".join([sub_id,ses_id])
     log = extra.csv_writer(fn_pre,folder = config.SAVE_FOLDER,
                            column_order = ["cond", "block_num", "trial_num",
-                                           "stim_on_global", "stim_on"])
+                                           "press_glob_time", "stim_on"])
 
     # debug: get timming after majority setup is finished.
     if debug:
@@ -297,7 +297,7 @@ def run_block(blocks, bn, config, eeg):
                 print(f"ISI: {ISI}")
 
         # Reset pin back to 0 after stimulus presented.
-        pin_reset(eeg)
+        pp_reset(eeg)
 
         # ISI timing
         isi = trial_t.getTime()
@@ -326,7 +326,7 @@ def run_block(blocks, bn, config, eeg):
                 print(trial_t.getTime())
 
         # Reset pin back to 0 after stimulus presented.
-        pin_reset(eeg)
+        pp_reset(eeg)
 
         ## Response On ##
         # Respond with Fixation
@@ -354,30 +354,30 @@ def run_block(blocks, bn, config, eeg):
 
                 key_resp = key[0].capitalize()
                 # Log: Trial log
-                trial_info = dict(trial_num = tr+1,
+                trial_log = dict(trial_num = tr+1,
                                   block_num = bn+1,
-                                  press_glob_time = press_gb_time,
+                                  press_glob_time = press_glob_time,
                                   rt = rt,
                                   response = key_resp,
                                   correct = key_resp == blocks[bn][tr]["correct_resp"],
-                                  stim_on = stim_on
-                                  isi = isi
+                                  stim_on = stim_on,
+                                  isi = isi,
                                   glob_init_time = tr_glob_time
                                   )
                 # for debug
                 got_keys += 1
 
     		    # Log and write out the trial
-                log = blocks[bn][tr]
-                log.update(trial_info)
-                log.write(log)
+                tri_info = blocks[bn][tr]
+                tri_info.update(trial_log)
+                log.write(tri_info)
 
         # Miss response Log
         if got_keys == 0:
             # Log: Missing trial log
-            trial_info = dict(trial_num = tr+1,
+            trial_log = dict(trial_num = tr+1,
                               block_num = bn+1,
-                              press_glob_time = press_gb_time,
+                              press_glob_time = press_glob_time,
                               rt = None,
                               response = None,
                               correct = None,
@@ -385,9 +385,10 @@ def run_block(blocks, bn, config, eeg):
                               isi = isi
                               glob_init_time = tr_glob_time
                               )
-            log = blocks[bn][tr]
-            log.update(trial_info)
-            log.write(log)
+            # Log and write out the trial
+            tri_info = blocks[bn][tr]
+            tri_info.update(trial_log)
+            log.write(tri_info)
 
 def exp(blocks, config, glob_t, instruct):
     """Excute the Experiment
