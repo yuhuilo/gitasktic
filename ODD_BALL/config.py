@@ -45,5 +45,6 @@ COND_KEYS = ['space']
 INIT_PIN = 9
 END_PIN = 9
 TB_PIN = 7
+BB_PIN = 8
 STIM_PIN = 1
 RESP_PIN = 2

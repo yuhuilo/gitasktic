@@ -108,7 +108,9 @@ if beh:
                                 wrapWidth = config.MESSAGE_WIDTH)
     # Initate parallel port
     if eeg:
-        pp = parallel.ParallelPort(address = 0x0378)
+        ## May need to manually key in the address ##
+        #pp = parallel.ParallelPort(address = 0x0378)
+        pp = parallel.ParallelPort(address = 0xEFB8)
         pp.setData(0)
 
 
@@ -244,7 +246,7 @@ def block_prompt(blocks, bn, config):
         core.quit()
     return
 
-def run_block(blocks, bn, config, eeg):
+def run_block(blocks, bn, config):
     """ Experimental block
     Taking in blocks and it current block number. Loop around list of dictionary,
     excute each trials in following column_order
@@ -279,7 +281,10 @@ def run_block(blocks, bn, config, eeg):
         trial_time = trial_t.reset()
 
         ## Inter Stimulus Interval (ISI) ##
-        for fr in range(config.VISUAL_ISI):
+        # add jitter
+        isi_dur = config.VISUAL_ISI+blocks[bn][tr]['isi_jit']
+
+        for fr in range(isi_dur):
             fix.draw()
             win.flip()
             key = keypress(config)
@@ -380,10 +385,10 @@ def run_block(blocks, bn, config, eeg):
                               press_glob_time = press_glob_time,
                               rt = None,
                               response = None,
-                              correct = None,
-                              stim_on = stim_on
-                              isi = isi
-                              glob_init_time = tr_glob_time
+                              correct = False,
+                              stim_on = stim_on,
+                              isi = isi,
+                              glob_init_time = tr_glob_time,
                               )
             # Log and write out the trial
             tri_info = blocks[bn][tr]
@@ -421,19 +426,20 @@ def exp(blocks, config, glob_t, instruct):
     # EEG PIN setup
     if eeg:
         if debug:
-            print(f" BLOCK BEGAN : {glob_t.getTime()}"
+            print(f" BLOCK BEGAN : {glob_t.getTime()}")
         pp.setData(config.INIT_PIN)
 
     ## Initate Experimental ##
     for bn in range(len(blocks)):
         block_prompt(blocks, bn, config)
+        pp.setData(config.TB_PIN)
         run_block(blocks, bn, config)
 
     # EEG PIN setup
     if eeg:
         pp.setData(config.END_PIN)
         if debug:
-            print(f" BLOCK ENDED : {glob_t.getTime()}"
+            print(f" BLOCK ENDED : {glob_t.getTime()}")
 
     # Experiment End prompt
     prompt(instruct.finished_inst)
@@ -441,7 +447,7 @@ def exp(blocks, config, glob_t, instruct):
 ###########################
 ## (3).Excute Experiment ##
 ###########################
-if __name__ == __main__:
+if __name__ == "__main__":
     if beh:
         # Run Experiment
         exp(blocks, config, glob_t, instruct)

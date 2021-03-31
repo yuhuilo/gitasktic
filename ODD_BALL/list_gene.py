@@ -55,7 +55,12 @@ def list_gene(config):
 
                 # shuffle the conds
                 random.shuffle(config.CONDS)
-
+                
+                # Generate jitter range
+                jitter_range = [i+1 for i in range(config.JITTER)]
+                random.shuffle(jitter_range)
+                random.shuffle(jitter_range)
+                
                 # make the block
                 block = [{'cond':cond,
                           'common_stim':stim['common'],
@@ -63,7 +68,8 @@ def list_gene(config):
                           'common_resp':resp['common'],
                           'rare_resp':resp['rare'],
                           'stim':stim[cond],
-                          'correct_resp':resp[cond]}
+                          'correct_resp':resp[cond],
+                          'isi_jit':jitter_range[0]}
                          for cond in config.CONDS]
 
                 # append to blocks
