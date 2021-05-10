@@ -3,7 +3,7 @@ This file is part of the github course W2 task
 """
 import numpy as np
 
-iter = [0, 1, 2, 4, 5, 6]
+iter = [0, 1, 2, 4, 5, 6, 8, 9]
 def miss_num_func(iter):
     '''
     This function takes in a list called "iter" with items in serial order,
