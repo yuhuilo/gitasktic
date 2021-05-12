@@ -1,15 +1,10 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-#!/usr/bin/env python
-# coding: utf-8
-=======
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-This file is part of the github course W2 task
+This script will return the missing items in a list
 """
 import numpy as np
->>>>>>> 754c5963d52b7f35ac340377aed974049123b36b
 
-iter = [0, 1, 2, 4, 5, 6]
 def miss_num_func(iter):
     '''
     This function takes in a list called "iter" with items in serial order,
@@ -27,28 +22,29 @@ def miss_num_func(iter):
     all_index = list(range(0, n+1))
     lis_dif = [i for i in all_index if i not in same_index]
 
-<<<<<<< HEAD
-print(miss_num_funct(iter))
-=======
-def miss_func_num(iter):
-    return [x for x in range(iter[0], iter[-1]+1)
-                               if x not in iter]
-
-# Driver code
-iter = [0, 1, 2, 4, 5, 6]
-miss = miss_func_num(iter)
-for i in miss:
-    print(i)
-#print(miss)
->>>>>>> 1a0e1ec27b773629fa1e3a38e16f7d321aebc87b
-=======
     item = []
     for i in range(len(lis_dif)):
         item.append(compare[lis_dif[i]])
 
     return item
 
-miss = miss_num_func(iter)
 
-miss
->>>>>>> 754c5963d52b7f35ac340377aed974049123b36b
+def find_miss_num_func():
+    a = input("Take in numbers(press space key to space number, ex: 0 1 2 3 4)\nEnter here: ")
+    # create a list of the input numbers
+    a_split = a.split(sep=' ')
+    a_list = list(map(int, a_split))
+    
+    
+    #find miss number with miss_num_func
+    miss = miss_num_func(a_list)
+    
+    miss_to_str = ' '.join(map(str, miss))
+    if len(miss) != 1:
+        print("There are multilple missing numbers: %s" % miss_to_str )
+    
+    elif len(miss) == 1:
+        print("There is one missing number: %s" % miss_to_str)
+        
+find_miss_num_func()
+

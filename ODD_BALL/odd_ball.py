@@ -20,7 +20,7 @@ If Set true it will run it, this helps with debug.
 instruction = True
 demo_gui = True
 beh = True
-eeg = True
+eeg = False
 debug = False
 
 
