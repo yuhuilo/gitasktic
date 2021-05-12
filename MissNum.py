@@ -1,18 +1,32 @@
-#!/usr/bin/env python
-# coding: utf-8
+"""
+This file is part of the github course W2 task
+"""
+import numpy as np
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-iter = [0,1,2,4,5,6,8,9]
-=======
-#I sure hope this works
-iter = [0,1,2,4,5,6]
->>>>>>> revertime
-=======
-iter = [0,1,2,4,5,6,8,9]
->>>>>>> ea535d5f2d362128422ecd2c4fdbf48f6b846149
-def miss_num_func():
-    return [x for x in range(iter[0], iter[-1]+1)
-                                if x not in iter]
+iter = [0, 1, 2, 4, 5, 6, 8, 9]
+def miss_num_func(iter):
+    '''
+    This function takes in a list called "iter" with items in serial order,
+    and returns the missing item.
+    1. Make another list called "compare" with the biggest item in iter list as the final item
+    2. Compare "compare" with "iter", and returns the missing item
+    '''
+    n = iter[-1]
+    compare = np.arange(0, n+1, 1).tolist()
+    same_index = []
+    for i in range(len(iter)):
+        for j in range(len(compare)):
+            if iter[i] == compare[j]:
+                same_index.append(j)
+    all_index = list(range(0, n+1))
+    lis_dif = [i for i in all_index if i not in same_index]
 
-print(miss_num_funct(iter))
+    item = []
+    for i in range(len(lis_dif)):
+        item.append(compare[lis_dif[i]])
+
+    return item
+
+miss = miss_num_func(iter)
+
+miss
