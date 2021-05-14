@@ -1,4 +1,5 @@
-"""Oddball Experiment
+"""This should be the one that shows up
+Oddball Experiment
 created by Paul Z. Cheng
 
 Experimental flow:
@@ -19,7 +20,7 @@ If Set true it will run it, this helps with debug.
 instruction = True
 demo_gui = True
 beh = True
-eeg = True
+eeg = False
 debug = False
 
 
@@ -31,6 +32,7 @@ import config                       # expermental variables
 import extra    	                # for logging
 from list_gene import list_gene
 import instruct
+
 
 ## Experimental conditons generation ##
 """ Out production of list_gene is a list of list of dictionary
@@ -84,7 +86,7 @@ if beh:
     # debug: get timming after majority setup is finished.
     if debug:
         mm_time = glob_t.getTime()
-        print(f"Time it takes to set up : {mm_time}")
+        print("Time it takes to set up : {mm_time}")
 
     ## Create window ##
     """ Create monitor object, using width and distance to control for control
@@ -208,10 +210,10 @@ def block_prompt(blocks, bn, config):
     # General text
     block_break = visual.TextStim(win, text="press SPACE keys to continue...",
                                   pos = (0, -6),antialias = True)
-    left_resp_key = visual.TextStim(win, text=f"Press {config.RESPS[0]} ",
+    left_resp_key = visual.TextStim(win, text="Press {config.RESPS[0]} ",
                                     font = "Arial", pos = (-5, -1),
                                     antialias = True)
-    right_resp_key = visual.TextStim(win, text=f"Press {config.RESPS[1]} ",
+    right_resp_key = visual.TextStim(win, text="Press {config.RESPS[1]} ",
                                      font = "Arial", pos = (5, -1),
                                      antialias = True)
     left_resp_stim = visual.TextStim(win, font = "Arial",pos = (-5, 1),
@@ -221,11 +223,11 @@ def block_prompt(blocks, bn, config):
 
     # Responds position
     if (blocks[bn][0]['common_stim'] == 'O') and (blocks[bn][0]['common_resp'] == 'J'):
-        left_resp_stim.text = f" {blocks[bn][0]['common_stim']}"
-        right_resp_stim.text = f" {blocks[bn][0]['rare_stim']}"
+        left_resp_stim.text = " {blocks[bn][0]['common_stim']}"
+        right_resp_stim.text = " {blocks[bn][0]['rare_stim']}"
     else:
-        left_resp_stim.text = f" {blocks[bn][0]['rare_stim']}"
-        right_resp_stim.text = f" {blocks[bn][0]['common_stim']}"
+        left_resp_stim.text = " {blocks[bn][0]['rare_stim']}"
+        right_resp_stim.text = " {blocks[bn][0]['common_stim']}"
 
     # Draw all items
     block_break.draw()
@@ -276,7 +278,7 @@ def run_block(blocks, bn, config):
     for tr in range(len(blocks[bn])):
         # Start trial timer, also reset timmer for intra-trial RT
         if debug:
-            print(f"Block {bn} Trial {tr} ...")
+            print("Block {bn} Trial {tr} ...")
         tr_glob_time = glob_t.getTime()
         trial_time = trial_t.reset()
 
@@ -299,7 +301,7 @@ def run_block(blocks, bn, config):
 
             # debug
             if debug:
-                print(f"ISI: {ISI}")
+                print("ISI: {ISI}")
 
         # Reset pin back to 0 after stimulus presented.
         pp_reset(eeg)
@@ -411,7 +413,7 @@ def exp(blocks, config, glob_t, instruct):
         instruct : Instruction files with all the prompt instructions
     """
     exp_bg = glob_t.getTime()
-    print(f"Experiment began machine time : {exp_bg} ...")
+    print("Experiment began machine time : {exp_bg} ...")
 
     ## Instructions ##
     prompt(instruct.init_inst)
@@ -426,7 +428,7 @@ def exp(blocks, config, glob_t, instruct):
     # EEG PIN setup
     if eeg:
         if debug:
-            print(f" BLOCK BEGAN : {glob_t.getTime()}")
+            print(" BLOCK BEGAN : {glob_t.getTime()}")
         pp.setData(config.INIT_PIN)
 
     ## Initate Experimental ##
@@ -441,7 +443,7 @@ def exp(blocks, config, glob_t, instruct):
     if eeg:
         pp.setData(config.END_PIN)
         if debug:
-            print(f" BLOCK ENDED : {glob_t.getTime()}")
+            print(" BLOCK ENDED : {glob_t.getTime()}")
 
     # Experiment End prompt
     prompt(instruct.finished_inst)
@@ -456,4 +458,4 @@ if __name__ == "__main__":
         # debug
         if debug:
             exp_end = glob_t.getTime()
-            print(f" Total Experimental Run time began : {mm_time} \n End : {exp_end}")
+            print(" Total Experimental Run time began : {mm_time} \n End : {exp_end}")
